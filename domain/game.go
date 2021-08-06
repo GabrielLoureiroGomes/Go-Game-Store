@@ -61,6 +61,29 @@ func GetAllGames() ([]Game, error) {
 	return games, nil
 }
 
+func GetGameByName(name string) (Game, error) {
+
+	result := Game{}
+
+	filter := bson.D{primitive.E{Key: "name", Value: name}}
+
+	client, err := db.GetMongoClient()
+
+	if err != nil {
+		return result, err
+	}
+
+	collection := client.Database(db.DB).Collection(db.GAMES)
+
+	err = collection.FindOne(context.TODO(), filter).Decode(&result)
+
+	if err != nil {
+		return result, err
+	}
+
+	return result, nil
+}
+
 func CreateGame(game Game) error {
 
 	client, err := db.GetMongoClient()
@@ -72,6 +95,57 @@ func CreateGame(game Game) error {
 	collection := client.Database(db.DB).Collection(db.GAMES)
 
 	_, err = collection.InsertOne(context.TODO(), game)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteGame(gameName string) error {
+
+	filter := bson.D{primitive.E{Key: "name", Value: gameName}}
+
+	client, err := db.GetMongoClient()
+
+	if err != nil {
+		return err
+	}
+
+	collection := client.Database(db.DB).Collection(db.GAMES)
+
+	_, err = collection.DeleteOne(context.TODO(), filter)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func UpdateGame(game Game) error {
+
+	filter := bson.D{primitive.E{Key: "name", Value: game.Name}}
+
+	updater := bson.D{primitive.E{Key: "$set", Value: bson.D{
+		primitive.E{Key: "name", Value: game.Name},
+		{Key: "producer", Value: game.Producer},
+		{Key: "platform", Value: game.Platform},
+		{Key: "parentalRating", Value: game.ParentalRating},
+		{Key: "cooperative", Value: game.Cooperative},
+		{Key: "rating", Value: game.Rating},
+	}}}
+
+	client, err := db.GetMongoClient()
+
+	if err != nil {
+		return err
+	}
+
+	collection := client.Database(db.DB).Collection(db.GAMES)
+
+	_, err = collection.UpdateOne(context.TODO(), filter, updater)
 
 	if err != nil {
 		return err

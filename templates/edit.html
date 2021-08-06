@@ -1,4 +1,4 @@
-{{define "NewRegister"}}
+{{define "Edit"}}
 
 {{template "_head"}}
 
@@ -9,16 +9,16 @@
     <body>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h1 class="display-5">New Register</h1>
-                <p class="lead">Enter the information</p>
+                <h1 class="display-5">Edit Register</h1>
+                <p class="lead">Edit the information</p>
             </div>
         </div>
-        <form method="POST" action="insert">
+        <form method="PUT" action="update">
             <div class="row">
                 <div class="col-sm-8">
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" name="name" class="form-control" placeholder="Ex: Pacman">
+                        <input type="text" name="name" class="form-control" value="{{.Name}}" placeholder="Ex: Pacman">
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="col-sm-8">
                     <div class="form-group">
                         <label for="producer">Producer:</label>
-                        <input type="text" name="producer" class="form-control" placeholder="Ex: Namco">
+                        <input type="text" name="producer" class="form-control" value="{{.Producer}}" placeholder="Ex: Namco">
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="platform">Platform:</label>
-                        <input type="text" name="platform" class="form-control" step="0.01" placeholder="Ex: Arcade">
+                        <input type="text" name="platform" class="form-control" value="{{.Platform}}" step="0.01" placeholder="Ex: Arcade">
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="parentalRating">Parental Rating:</label>
-                        <input type="number" name="parentalRating" class="form-control" placeholder="Ex: 18">
+                        <input type="number" name="parentalRating" class="form-control" value=".ParentalRating" placeholder="Ex: 18">
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="cooperative">Cooperative:</label>
-                        <input type="text" name="cooperative" class="form-control" placeholder="true or false">
+                        <input type="text" name="cooperative" class="form-control" value="{{.Cooperative}}" placeholder="true or false">
                     </div>
                 </div>
             </div>
@@ -61,12 +61,12 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="rating">Rating:</label>
-                        <input type="number" name="rating" class="form-control" placeholder="Ex: 3">
+                        <input type="number" name="rating" class="form-control" value="{{.Rating}}" placeholder="Ex: 3">
                     </div>
                 </div>
             </div>
 
-            <button type="submit" value="back" class="btn btn-success">Save</button>
+            <button type="submit" value="back" class="btn btn-success">Update</button>
             <a class="btn btn-info" href="/">Back</a>
         </form>
     </body>
@@ -76,4 +76,5 @@
 </body>
 
 </html>
+
 {{end}}

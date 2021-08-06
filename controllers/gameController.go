@@ -62,3 +62,58 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
+
+func Delete(w http.ResponseWriter, r *http.Request) {
+
+	gameName := r.URL.Query().Get("name")
+
+	g.DeleteGame(gameName)
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
+}
+
+func Edit(w http.ResponseWriter, r *http.Request) {
+
+	gameName := r.URL.Query().Get("name")
+
+	game, err := g.GetGameByName(gameName)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	temp.ExecuteTemplate(w, "Edit", game)
+
+}
+
+func Update(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "PUT" {
+		name := r.FormValue("name")
+		producer := r.FormValue("producer")
+		platform := r.FormValue("platform")
+		parentalRating := r.FormValue("parentalRating")
+		cooperative := r.FormValue("cooperative")
+		rating := r.FormValue("rating")
+
+		parentalRatingConv, err := strconv.Atoi(parentalRating)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		coopConv, err := strconv.ParseBool(cooperative)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		ratingConv, err := strconv.Atoi(rating)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		g.UpdateGame(g.Game{Name: name, Producer: producer, Platform: platform, ParentalRating: parentalRatingConv, Cooperative: coopConv, Rating: ratingConv})
+	}
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
+}
