@@ -124,17 +124,17 @@ func DeleteGame(gameName string) error {
 	return nil
 }
 
-func UpdateGame(game Game) error {
+func UpdateGame(name, producer, platform string, parentalRating, rating int, cooperative bool) error {
 
-	filter := bson.D{primitive.E{Key: "name", Value: game.Name}}
+	filter := bson.D{primitive.E{Key: "name", Value: name}}
 
 	updater := bson.D{primitive.E{Key: "$set", Value: bson.D{
-		primitive.E{Key: "name", Value: game.Name},
-		{Key: "producer", Value: game.Producer},
-		{Key: "platform", Value: game.Platform},
-		{Key: "parentalRating", Value: game.ParentalRating},
-		{Key: "cooperative", Value: game.Cooperative},
-		{Key: "rating", Value: game.Rating},
+		primitive.E{Key: "name", Value: name},
+		{Key: "producer", Value: producer},
+		{Key: "platform", Value: platform},
+		{Key: "parentalRating", Value: parentalRating},
+		{Key: "cooperative", Value: cooperative},
+		{Key: "rating", Value: rating},
 	}}}
 
 	client, err := db.GetMongoClient()

@@ -113,7 +113,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 			panic(err.Error())
 		}
 
-		g.UpdateGame(g.Game{Name: name, Producer: producer, Platform: platform, ParentalRating: parentalRatingConv, Cooperative: coopConv, Rating: ratingConv})
+		g.UpdateGame(name, producer, platform, parentalRatingConv, ratingConv, coopConv)
 	}
 	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
